@@ -7,14 +7,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Data
-@Document(collection = "usuarios")
-public class Usuario {
+@Document(collection = "establecimientos")
+public class Establecimiento {
     @Id
     private String id;
     private String nombre;
-    private String apellido;
+    private String tipo;
     private Direccion direccion;
-    private String email;
-    private List<String> telefonos;
-    private List<String> reservas;
+    private Integer capacidadMaxima;
+    private Double puntuacionPromedio;
+    private Integer cantidadVotos;
+    private List<Comentario> comentarios;
 }
