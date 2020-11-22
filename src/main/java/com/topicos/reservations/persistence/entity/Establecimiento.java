@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @Document(collection = "establecimientos")
 public class Establecimiento {
+
     @Id
     private String id;
     private String nombre;
@@ -17,5 +18,7 @@ public class Establecimiento {
     private Integer capacidadMaxima;
     private Double puntuacionPromedio;
     private Integer cantidadVotos;
+    private Ubicacion ubicacion;
     private List<Comentario> comentarios;
+
 }
