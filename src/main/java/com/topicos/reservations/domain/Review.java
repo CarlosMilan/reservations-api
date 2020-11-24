@@ -2,6 +2,7 @@ package com.topicos.reservations.domain;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -9,7 +10,7 @@ public class Review {
     private String userId;
     private Integer score;
     private String commentary;
-    private Date createAt;
+    private LocalDateTime createAt;
 
     public String getUserId() {
         return userId;
@@ -35,11 +36,11 @@ public class Review {
         this.commentary = commentary;
     }
 
-    public Date getCreateAt() {
+    public LocalDateTime getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(LocalDateTime createAt) {
         this.createAt = createAt;
     }
 }

@@ -18,9 +18,7 @@ public interface UserMapper {
             @Mapping(source = "direccion.calle", target = "address.street"),
             @Mapping(source = "direccion.ciudad", target = "address.city"),
             @Mapping(source = "direccion.provincia", target = "address.province"),
-            @Mapping(source = "telefonos", target = "phones"),
-            @Mapping(source = "reservas", target = "reservations"),
-
+            @Mapping(source = "telefonos", target = "phones")
     })
     User toUser(Usuario usuario);
 

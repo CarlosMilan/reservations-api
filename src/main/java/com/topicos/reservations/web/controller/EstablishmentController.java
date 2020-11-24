@@ -17,12 +17,12 @@ public class EstablishmentController {
     @Autowired
     private EstablishmentService establishmentService;
 
-    @GetMapping("/all") // FUNCIONA
+    @GetMapping("/all")
     public ResponseEntity<List<Establishment>> getAll() {
         return new ResponseEntity<>( establishmentService.getAll(), HttpStatus.OK );
     }
 
-    @GetMapping("/{id}") // FUNCIONA
+    @GetMapping("/{id}")
     public ResponseEntity<Establishment> getEstablishment(@PathVariable("id") String establishmentId ) {
         if ( establishmentId.length() == 0 || establishmentId == null ) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
@@ -34,7 +34,7 @@ public class EstablishmentController {
 
     }
 
-    @GetMapping("/type/{type}") // FUNCIONA, PERO SI MANDO UN TIPO INCORRECTO DEVUELVE [] ?
+    @GetMapping("/type/{type}")
     public ResponseEntity<List<Establishment>> getByType(@PathVariable("type") String type) {
         if ( type.length() == 0 || type == null) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
@@ -45,7 +45,7 @@ public class EstablishmentController {
         }
     }
 
-    @GetMapping("/name/{name}") // FUNCIONA, PERO MISMO PROBLEMA QUE TYPE
+    @GetMapping("/name/{name}")
     public ResponseEntity<List<Establishment>> getByName(@PathVariable("name") String name) {
         if (name.length() == 0 || name == null) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
@@ -56,7 +56,7 @@ public class EstablishmentController {
         }
     }
 
-    @GetMapping("/address/{city}/{province}") // FUNCIONA, PERO IGUAL QUE LOS ANTERIORES
+    @GetMapping("/address/{city}/{province}")
     public ResponseEntity<List<Establishment>> getByAddress(@PathVariable("city") String city, @PathVariable("province") String province) {
         if ( city.length() == 0 || city == null || province.length() ==0 || province == null ) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
@@ -67,7 +67,7 @@ public class EstablishmentController {
         }
     }
 
-    @PostMapping("/save") // FUNCIONA
+    @PostMapping("/save")
     public ResponseEntity<Establishment> save( @RequestBody Establishment establishment ) {
         if ( establishment != null ) {
             return new ResponseEntity<>(establishmentService.save(establishment), HttpStatus.CREATED);
@@ -76,8 +76,7 @@ public class EstablishmentController {
         }
     }
 
-    // TODO: 24/11/2020 Controlar la cantidad de votos cuando se agrega o eliminan reviews - LISTO
-    @PutMapping("/add/review/{id}") // FUNCIONA
+    @PutMapping("/add/review/{id}")
     public ResponseEntity<Establishment> addReview(@PathVariable("id") String establishmentId, @RequestBody Review review) {
         if ( establishmentId.length() == 0 || establishmentId == null || review == null ) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
