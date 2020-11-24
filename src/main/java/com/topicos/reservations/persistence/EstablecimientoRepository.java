@@ -27,21 +27,40 @@ public class EstablecimientoRepository implements EstablishmentRepository {
 
     @Override
     public Optional<Establishment> getEstablishment(String establishmentId) {
-        return Optional.empty();
+        return this.establecimientoMongoRepository.findById( establishmentId )
+                .map( establecimiento -> mapper.toEstablishment( establecimiento ));
     }
 
     @Override
-    public Optional<List<Establishment>> getBestRated() {
-        return Optional.empty();
+    public Optional<List<Establishment>> getEstablishmentByAddress(String city, String province) {
+        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByDireccionCiudadAndDireccionProvincia( city, province );
+
+        return establecimientos.map( ests -> mapper.toEstablishments( ests ) );
+    }
+
+    @Override
+    public Optional<List<Establishment>> getEstablishmentByType(String type) {
+        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByTipo( type );
+
+        return establecimientos.map( ests -> mapper.toEstablishments( ests ) );
+    }
+
+    @Override
+    public Optional<List<Establishment>> getEstablishmentByName(String name) {
+        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByNombre( name );
+
+        return establecimientos.map( ests -> mapper.toEstablishments( ests ) );
     }
 
     @Override
     public Establishment save(Establishment establishment) {
-        return null;
+        Establecimiento establecimiento = mapper.toEstablecimiento( establishment );
+        return this.mapper.toEstablishment( this.establecimientoMongoRepository.save( establecimiento ));
+
     }
 
     @Override
     public void delete(String establishmentId) {
-
+        this.establecimientoMongoRepository.deleteById( establishmentId );
     }
 }
