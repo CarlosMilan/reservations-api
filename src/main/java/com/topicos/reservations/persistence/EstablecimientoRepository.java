@@ -40,40 +40,40 @@ public class EstablecimientoRepository implements EstablishmentRepository {
 
     @Override
     public Optional<List<Establishment>> getEstablishmentByAddress(String city, String province) {
-        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByDireccionCiudadAndDireccionProvincia( city, province );
+        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByDireccionCiudadIgnoreCaseAndDireccionProvinciaIgnoreCase( city, province );
 
         return establecimientos.map( ests -> mapper.toEstablishments( ests ) );
     }
 
     @Override
     public Optional<Page<Establishment>> getEstablishmentByAddress(String city, String province, Pageable pageable) {
-        Optional<Page<Establecimiento>> establecimientos = establecimientoMongoRepository.findByDireccionCiudadAndDireccionProvincia( city, province, pageable);
+        Optional<Page<Establecimiento>> establecimientos = establecimientoMongoRepository.findByDireccionCiudadIgnoreCaseAndDireccionProvinciaIgnoreCase( city, province, pageable);
         return establecimientos.map( est -> est.map( mapper::toEstablishment ));
     }
 
     @Override
     public Optional<List<Establishment>> getEstablishmentByType(String type) {
-        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByTipo( type );
+        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByTipoIgnoreCase( type );
 
         return establecimientos.map( ests -> mapper.toEstablishments( ests ) );
     }
 
     @Override
     public Optional<Page<Establishment>> getEstablishmentByType(String type, Pageable pageable) {
-        Optional<Page<Establecimiento>> establecimientos = establecimientoMongoRepository.findByTipo( type, pageable);
+        Optional<Page<Establecimiento>> establecimientos = establecimientoMongoRepository.findByTipoIgnoreCase( type, pageable);
         return establecimientos.map( est -> est.map( mapper::toEstablishment ));
     }
 
     @Override
     public Optional<List<Establishment>> getEstablishmentByName(String name) {
-        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByNombre( name );
+        Optional<List<Establecimiento>> establecimientos = this.establecimientoMongoRepository.findByNombreIgnoreCase( name );
 
         return establecimientos.map( ests -> mapper.toEstablishments( ests ) );
     }
 
     @Override
     public Optional<Page<Establishment>> getEstablishmentByName(String name, Pageable pageable) {
-        Optional<Page<Establecimiento>> establecimientos = establecimientoMongoRepository.findByNombre( name, pageable);
+        Optional<Page<Establecimiento>> establecimientos = establecimientoMongoRepository.findByNombreIgnoreCase( name, pageable);
         return establecimientos.map( est -> est.map( mapper::toEstablishment ));
     }
 

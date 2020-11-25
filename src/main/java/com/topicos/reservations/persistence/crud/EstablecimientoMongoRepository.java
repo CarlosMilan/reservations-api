@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EstablecimientoMongoRepository extends MongoRepository<Establecimiento, String> {
-    Optional<List<Establecimiento>> findByDireccionCiudadAndDireccionProvincia( String ciudad, String provincia );
-    Optional<Page<Establecimiento>> findByDireccionCiudadAndDireccionProvincia(String ciudad, String provincia, Pageable pageable);
-    Optional<List<Establecimiento>> findByTipo( String tipo );
-    Optional<Page<Establecimiento>> findByTipo( String tipo, Pageable pageable );
-    Optional<List<Establecimiento>> findByNombre( String nombre );
-    Optional<Page<Establecimiento>> findByNombre( String nombre, Pageable pageable );
+    Optional<List<Establecimiento>> findByDireccionCiudadIgnoreCaseAndDireccionProvinciaIgnoreCase( String ciudad, String provincia );
+    Optional<Page<Establecimiento>> findByDireccionCiudadIgnoreCaseAndDireccionProvinciaIgnoreCase(String ciudad, String provincia, Pageable pageable);
+    Optional<List<Establecimiento>> findByTipoIgnoreCase( String tipo );
+    Optional<Page<Establecimiento>> findByTipoIgnoreCase( String tipo, Pageable pageable );
+    Optional<List<Establecimiento>> findByNombreIgnoreCase( String nombre );
+    Optional<Page<Establecimiento>> findByNombreIgnoreCase( String nombre, Pageable pageable );
 }
