@@ -3,6 +3,10 @@ package com.topicos.reservations.web.controller;
 import com.topicos.reservations.domain.Reservation;
 import com.topicos.reservations.domain.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,11 @@ public class ReservationController {
     @GetMapping("/all")
     public ResponseEntity<List<Reservation>> getAll() {
         return new ResponseEntity<>( reservationService.getAll(), HttpStatus.OK );
+    }
+
+    @GetMapping("/page/all")
+    public ResponseEntity<Page<Reservation>> getAll( @PageableDefault(page = 0, size = 10, sort = "fechaCreacion", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>( reservationService.getAll( pageable ), HttpStatus.OK );
     }
 
     @GetMapping("/{id}")
@@ -43,6 +52,19 @@ public class ReservationController {
         }
     }
 
+
+    @GetMapping("/establishment/page/{id}")
+    public ResponseEntity<Page<Reservation>> getByEstablishment(@PathVariable("id") String establishmentId,
+                                                                @PageableDefault(page = 0, size = 10, sort = "fechaCreacion", direction = Sort.Direction.DESC) Pageable pageable) {
+        if ( establishmentId == null || establishmentId.length() == 0) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+        } else {
+            return reservationService.getByEstablishment( establishmentId, pageable )
+                    .map( reservations -> new ResponseEntity<>( reservations, HttpStatus.OK ))
+                    .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ) );
+        }
+    }
+
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Reservation>> getByUser(@PathVariable("id") String userId) {
         if ( userId == null || userId.length() == 0) {
@@ -53,6 +75,19 @@ public class ReservationController {
                     .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ) );
         }
     }
+
+    @GetMapping("/user/page/{id}")
+    public ResponseEntity<Page<Reservation>> getByUser(@PathVariable("id") String userId,
+                                                       @PageableDefault(page = 0, size = 10, sort = "fechaCreacion", direction = Sort.Direction.DESC) Pageable pageable) {
+        if ( userId == null || userId.length() == 0) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+        } else {
+            return reservationService.getByUser( userId, pageable )
+                    .map( reservations -> new ResponseEntity<>( reservations, HttpStatus.OK ))
+                    .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ) );
+        }
+    }
+
 
     @PostMapping("/save")
     public ResponseEntity<Reservation> save( @RequestBody Reservation reservation) {

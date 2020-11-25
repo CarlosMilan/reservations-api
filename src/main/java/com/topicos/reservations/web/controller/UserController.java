@@ -29,7 +29,7 @@ public class UserController {
         return new ResponseEntity<>( userService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("all/page")
+    @GetMapping("/page/all")
     public ResponseEntity<Page<User>> getAll( @PageableDefault(page = 0, size = 5, sort = "apellido", direction = Sort.Direction.ASC ) Pageable pageable) {
         return new ResponseEntity<>( userService.getAll( pageable ), HttpStatus.OK );
     }
