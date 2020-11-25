@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-@Document(collection = "reservas")
+@Document(collection = "reservaciones")
 public class Reservacion {
     @Id
     private String id;
