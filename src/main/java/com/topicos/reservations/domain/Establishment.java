@@ -11,6 +11,7 @@ public class Establishment {
     private String name;
     private String type;
     private Address address;
+    private List<String> phones;
     private Integer maxCapacity;
     private Double rating;
     private Integer numOfVotes;
@@ -23,6 +24,14 @@ public class Establishment {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public List<String> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
     }
 
     public String getName() {

@@ -16,6 +16,7 @@ public class Establecimiento {
     private String nombre;
     private String tipo;
     private Direccion direccion;
+    private List<String> telefonos;
     private Integer capacidadMaxima;
     private Double puntuacionPromedio;
     private Integer cantidadVotos;
@@ -24,6 +25,15 @@ public class Establecimiento {
 
     public Establecimiento() {
         comentarios = new ArrayList<Comentario>();
+        telefonos = new ArrayList<String>();
+    }
+
+    public List<String> getTelefonos() {
+        return telefonos;
+    }
+
+    public void setTelefonos(List<String> telefonos) {
+        this.telefonos = telefonos;
     }
 
     public String getId() {

@@ -18,6 +18,7 @@ public interface EstablishmentMapper {
             @Mapping(source = "direccion.calle", target = "address.street"),
             @Mapping(source = "direccion.ciudad", target = "address.city"),
             @Mapping(source = "direccion.provincia", target = "address.province"),
+            @Mapping(source = "telefonos", target = "phones"),
             @Mapping(source = "capacidadMaxima", target = "maxCapacity"),
             @Mapping(source = "puntuacionPromedio", target = "rating"),
             @Mapping(source = "cantidadVotos", target = "numOfVotes"),
