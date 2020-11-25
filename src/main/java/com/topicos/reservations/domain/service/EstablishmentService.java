@@ -59,6 +59,8 @@ public class EstablishmentService {
     }
 
     public Establishment save( Establishment establishment) {
+        establishment.setRating(0D);
+        establishment.setNumOfVotes(0);
         return repository.save( establishment );
     }
 
