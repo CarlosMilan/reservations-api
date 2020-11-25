@@ -4,6 +4,10 @@ import com.topicos.reservations.domain.Establishment;
 import com.topicos.reservations.domain.Review;
 import com.topicos.reservations.domain.service.EstablishmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +24,11 @@ public class EstablishmentController {
     @GetMapping("/all")
     public ResponseEntity<List<Establishment>> getAll() {
         return new ResponseEntity<>( establishmentService.getAll(), HttpStatus.OK );
+    }
+
+    @GetMapping("/page/all")
+    public ResponseEntity<Page<Establishment>> getAll( @PageableDefault(page = 0, size = 10, sort = "nombre", direction = Sort.Direction.ASC) Pageable pageable ) {
+        return new ResponseEntity<>( establishmentService.getAll( pageable ), HttpStatus.OK );
     }
 
     @GetMapping("/{id}")
@@ -45,6 +54,19 @@ public class EstablishmentController {
         }
     }
 
+    @GetMapping("/type/page/{type}")
+    public ResponseEntity<Page<Establishment>> getByType(@PathVariable("type") String type,
+                                                         @PageableDefault(page = 0, size = 10, sort = "nombre", direction = Sort.Direction.ASC) Pageable pageable) {
+        if ( type.length() == 0 || type == null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+        } else {
+            return establishmentService.getByType( type, pageable )
+                    .map( establishmentsPage -> new ResponseEntity<>( establishmentsPage, HttpStatus.OK))
+                    .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ));
+        }
+    }
+
+
     @GetMapping("/name/{name}")
     public ResponseEntity<List<Establishment>> getByName(@PathVariable("name") String name) {
         if (name.length() == 0 || name == null) {
@@ -56,6 +78,18 @@ public class EstablishmentController {
         }
     }
 
+    @GetMapping("/name/page/{name}")
+    public ResponseEntity<Page<Establishment>> getByName(@PathVariable("name") String name,
+                                                         @PageableDefault(page = 0, size = 10, sort = "nombre", direction = Sort.Direction.ASC) Pageable pageable) {
+        if (name.length() == 0 || name == null) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+        } else {
+            return establishmentService.getByName(name, pageable)
+                    .map(establishmentsPage -> new ResponseEntity<>(establishmentsPage, HttpStatus.OK))
+                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }
+    }
+
     @GetMapping("/address/{city}/{province}")
     public ResponseEntity<List<Establishment>> getByAddress(@PathVariable("city") String city, @PathVariable("province") String province) {
         if ( city.length() == 0 || city == null || province.length() ==0 || province == null ) {
@@ -63,6 +97,18 @@ public class EstablishmentController {
         } else {
             return establishmentService.getByAddress(city, province)
                     .map( establishments -> new ResponseEntity<>( establishments, HttpStatus.OK))
+                    .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ));
+        }
+    }
+
+    @GetMapping("/address/page/{city}/{province}")
+    public ResponseEntity<Page<Establishment>> getByAddress(@PathVariable("city") String city, @PathVariable("province") String province,
+                                                            @PageableDefault(page = 0, size = 10, sort = "nombre", direction = Sort.Direction.ASC) Pageable pageable) {
+        if ( city.length() == 0 || city == null || province.length() ==0 || province == null ) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+        } else {
+            return establishmentService.getByAddress(city, province, pageable)
+                    .map( establishmentsPage -> new ResponseEntity<>( establishmentsPage, HttpStatus.OK))
                     .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ));
         }
     }

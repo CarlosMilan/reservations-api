@@ -60,7 +60,7 @@ public class ReservationController {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
         } else {
             return reservationService.getByEstablishment( establishmentId, pageable )
-                    .map( reservations -> new ResponseEntity<>( reservations, HttpStatus.OK ))
+                    .map( reservationsPage -> new ResponseEntity<>( reservationsPage, HttpStatus.OK ))
                     .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ) );
         }
     }
@@ -83,7 +83,7 @@ public class ReservationController {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
         } else {
             return reservationService.getByUser( userId, pageable )
-                    .map( reservations -> new ResponseEntity<>( reservations, HttpStatus.OK ))
+                    .map( reservationsPage -> new ResponseEntity<>( reservationsPage, HttpStatus.OK ))
                     .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ) );
         }
     }

@@ -6,6 +6,8 @@ import com.topicos.reservations.domain.User;
 import com.topicos.reservations.domain.repository.EstablishmentRepository;
 import com.topicos.reservations.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,10 @@ public class EstablishmentService {
         return repository.getAll();
     }
 
+    public Page<Establishment> getAll( Pageable pageable ) {
+        return repository.getAll( pageable );
+    }
+
     public Optional<Establishment> getEstablishment( String establishmentId ) {
         return repository.getEstablishment( establishmentId );
     }
@@ -32,12 +38,24 @@ public class EstablishmentService {
         return this.repository.getEstablishmentByType( type );
     }
 
+    public Optional<Page<Establishment>> getByType( String type, Pageable pageable ) {
+        return this.repository.getEstablishmentByType( type, pageable );
+    }
+
     public Optional<List<Establishment>> getByAddress( String city, String province ) {
         return this.repository.getEstablishmentByAddress( city, province);
     }
 
+    public Optional<Page<Establishment>> getByAddress( String city, String province, Pageable pageable ) {
+        return this.repository.getEstablishmentByAddress( city, province, pageable );
+    }
+
     public Optional<List<Establishment>> getByName( String name ) {
         return this.repository.getEstablishmentByName( name );
+    }
+
+    public Optional<Page<Establishment>> getByName( String name, Pageable pageable ) {
+        return this.repository.getEstablishmentByName( name, pageable );
     }
 
     public Establishment save( Establishment establishment) {
