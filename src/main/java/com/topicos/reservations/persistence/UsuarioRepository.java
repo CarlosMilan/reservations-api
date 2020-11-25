@@ -6,6 +6,8 @@ import com.topicos.reservations.persistence.crud.UsuarioMongoRepository;
 import com.topicos.reservations.persistence.entity.Usuario;
 import com.topicos.reservations.persistence.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,6 +26,11 @@ public class UsuarioRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         return mapper.toUsers( (List<Usuario>) usuarioMongoRepository.findAll() );
+    }
+
+    @Override
+    public Page<User> getAll(Pageable pageable) {
+        return usuarioMongoRepository.findAll( pageable ).map(mapper::toUser);
     }
 
     @Override

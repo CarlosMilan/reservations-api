@@ -5,6 +5,10 @@ import com.topicos.reservations.domain.service.UserService;
 import com.topicos.reservations.persistence.crud.UsuarioMongoRepository;
 import com.topicos.reservations.persistence.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,11 @@ public class UserController {
     public ResponseEntity<List<User>> getAll(){
         //List<Usuario> usuarios = repository.findAll();
         return new ResponseEntity<>( userService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("all/page")
+    public ResponseEntity<Page<User>> getAll( @PageableDefault(page = 0, size = 5, sort = "apellido", direction = Sort.Direction.ASC ) Pageable pageable) {
+        return new ResponseEntity<>( userService.getAll( pageable ), HttpStatus.OK );
     }
 
     @GetMapping("/{id}")
