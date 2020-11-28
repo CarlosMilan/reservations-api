@@ -3,12 +3,14 @@ package com.topicos.reservations.persistence.entity;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Document(collection = "usuarios")
+@Sharded(shardKey = {"email"})
 public class Usuario {
     @Id
     private String id;
