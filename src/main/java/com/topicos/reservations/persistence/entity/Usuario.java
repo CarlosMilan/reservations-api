@@ -8,6 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Sharded;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La anotacion @Sharded dentro de la cual se indica cual es la shard key es necesaria, de lo contrario no se podrán
+ * realizar updates sobre los documentos
+ */
 @Data
 @Document(collection = "usuarios")
 @Sharded(shardKey = {"email"})
