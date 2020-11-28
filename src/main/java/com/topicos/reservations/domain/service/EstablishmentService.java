@@ -73,7 +73,7 @@ public class EstablishmentService {
                     establishment.setRating(review.getScore().doubleValue());
                     establishment.getReviews().add(review);
                     establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
-                    return save(establishment);
+                    return repository.save(establishment);
                 } else {
 
                     boolean existUserId = false;
@@ -90,7 +90,7 @@ public class EstablishmentService {
                         establishment.setRating(newRating);
                         establishment.getReviews().add(review);
                         establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
-                        return save(establishment);
+                        return repository.save(establishment);
                     } else return establishment;
                 }
 
@@ -118,7 +118,7 @@ public class EstablishmentService {
                 }
                 newRating = newRating / establishment.getReviews().size();
                 establishment.setRating( newRating );
-                return save( establishment );
+                return repository.save( establishment );
             } else {
                 return null;
             }
@@ -134,14 +134,21 @@ public class EstablishmentService {
                 if (establishment.getReviews().size() > 0) {
                     for (int i = 0; i < establishment.getReviews().size() ; i++) {
                         if (establishment.getReviews().get(i).getUserId().equals(userId)) {
-                            establishment.setNumOfVotes( establishment.getNumOfVotes() - 1 );
 
                             Double newRating = establishment.getRating() * establishment.getReviews().size();
                             newRating -= establishment.getReviews().get(i).getScore();
                             newRating = newRating / (establishment.getReviews().size() - 1 );
-                            establishment.setRating(newRating);
+
                             establishment.getReviews().remove(i);
-                            save( establishment );
+                            if (establishment.getReviews().size() == 0) {
+                                establishment.setNumOfVotes( 0 );
+                                establishment.setRating( 0D );
+                            } else {
+                                establishment.setNumOfVotes( establishment.getNumOfVotes() - 1 );
+                                establishment.setRating(newRating);
+                            }
+
+                            repository.save( establishment );
                             break;
                         }
                     }
