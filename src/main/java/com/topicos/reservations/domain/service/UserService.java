@@ -28,6 +28,10 @@ public class UserService {
         return this.userRepository.getUser( userId );
     }
 
+    public Optional<User> findUserByUsername( String username ) {
+        return userRepository.findByUsername( username );
+    }
+
     public User save( User user) {
         return this.userRepository.save( user );
     }

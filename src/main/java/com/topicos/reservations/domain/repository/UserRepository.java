@@ -11,6 +11,7 @@ public interface UserRepository {
     List<User> getAll();
     Page<User> getAll(Pageable pageable);
     Optional<User> getUser(String userId);
+    Optional<User> findByUsername(String username);
     User save(User user);
     void delete(String userId);
 }

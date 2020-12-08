@@ -13,6 +13,7 @@ public interface ReservationRepository {
      Optional<Reservation> getReservation( String reservationId );
      Optional<List<Reservation>> getByEstablishment( String establishmentId );
      Optional<Page<Reservation>> getByEstablishment( String establishmentId, Pageable pageable );
+     Optional<Page<Reservation>> getByEstablishmentName( String establishmentName, Pageable pageable );
      Optional<List<Reservation>> getByUser( String userId );
      Optional<Page<Reservation>> getByUser( String userId, Pageable pageable );
      Reservation save( Reservation reservation);

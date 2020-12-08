@@ -56,6 +56,10 @@ public class ReservationService {
         return this.reservationRepository.getByUser( userId, pageable );
     }
 
+    public Optional<Page<Reservation>> getByEstablishmentName( String establishmentName, Pageable pageable ) {
+        return this.reservationRepository.getByEstablishmentName( establishmentName, pageable );
+    }
+
 
     public Reservation save( Reservation reservation ) {
         if (reservation.getEstablishmentId() == null || reservation.getEstablishmentId().length() == 0 || reservation.getUserId() == null || reservation.getUserId().length() == 0 ) {
@@ -71,6 +75,7 @@ public class ReservationService {
                     LocalDateTime dateTime = LocalDateTime.now();
                     reservation.setCreateAt( dateTime );
                 }
+                reservation.setEstablishmentName( establishment.getName() );
                 Reservation res = reservationRepository.save( reservation );
                 //userRepository.save( user );
                 System.out.println("EL USUARIO SE GUARDÓ: user = " + user);

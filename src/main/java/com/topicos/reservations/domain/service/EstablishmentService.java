@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +72,7 @@ public class EstablishmentService {
             if (establishment != null && user != null) {
                 if (establishment.getReviews() == null || establishment.getReviews().size() == 0) {
                     establishment.setRating(review.getScore().doubleValue());
+                    review.setCreateAt( LocalDateTime.now() );
                     establishment.getReviews().add(review);
                     establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
                     return repository.save(establishment);
@@ -88,6 +90,7 @@ public class EstablishmentService {
                         newRating += review.getScore();
                         newRating = newRating / (establishment.getReviews().size() + 1);
                         establishment.setRating(newRating);
+                        review.setCreateAt( LocalDateTime.now() );
                         establishment.getReviews().add(review);
                         establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
                         return repository.save(establishment);

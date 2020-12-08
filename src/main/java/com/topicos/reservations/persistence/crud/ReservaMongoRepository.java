@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface ReservaMongoRepository extends MongoRepository<Reservacion, String> {
     Optional<List<Reservacion>> findByIdEstablecimiento(String idEstablecimiento, Sort sort );
     Optional<Page<Reservacion>> findByIdEstablecimiento(String idEstablecimiento, Pageable pageable);
+    Optional<Page<Reservacion>> findByNombreEstablecimientoIgnoreCase( String nombreEstablecimiento, Pageable pageable );
     Optional<List<Reservacion>> findByIdUsuario(String idUsuario, Sort sort);
     Optional<Page<Reservacion>> findByIdUsuario(String idUsuario, Pageable pageable);
 }

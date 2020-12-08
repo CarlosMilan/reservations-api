@@ -11,6 +11,7 @@ public class User {
     private String lastName;
     private Address address;
     private String email;
+    private String password;
     private List<String> phones;
 
     public String getId() {
@@ -55,6 +56,15 @@ public class User {
 
     public List<String> getPhones() {
         return phones;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setPhones(List<String> phones) {

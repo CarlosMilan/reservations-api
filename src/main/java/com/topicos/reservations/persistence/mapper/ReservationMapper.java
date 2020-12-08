@@ -15,6 +15,7 @@ public interface ReservationMapper {
     @Mappings({
             @Mapping(source = "idUsuario", target = "userId"),
             @Mapping(source = "idEstablecimiento", target = "establishmentId"),
+            @Mapping(source = "nombreEstablecimiento", target = "establishmentName"),
             @Mapping(source = "fechaReserva", target = "reservationDate"),
             @Mapping(source = "nombre", target = "name"),
             @Mapping(source = "cantPersonas", target = "amountOfPeople"),

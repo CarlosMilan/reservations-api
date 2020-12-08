@@ -52,6 +52,12 @@ public class ReservacionRepository implements ReservationRepository {
     }
 
     @Override
+    public Optional<Page<Reservation>> getByEstablishmentName(String establishmentName, Pageable pageable) {
+        Optional<Page<Reservacion>> reservaciones = this.reservaMongoRepository.findByNombreEstablecimientoIgnoreCase( establishmentName, pageable );
+        return reservaciones.map( res -> res.map( mapper::toReservation ) );
+    }
+
+    @Override
     public Optional<List<Reservation>> getByUser(String userId) {
         Optional<List<Reservacion>> reservaciones = this.reservaMongoRepository.findByIdUsuario( userId, Sort.by(Sort.Direction.DESC, "fechaCreacion") );
         return reservaciones.map( res -> mapper.toReservations( res ));

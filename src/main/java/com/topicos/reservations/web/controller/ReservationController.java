@@ -76,6 +76,20 @@ public class ReservationController {
         }
     }
 
+    @GetMapping("/establishment/page/name/{name}")
+    public ResponseEntity<Page<Reservation>> getByEstablishmentName( @PathVariable("name") String establishmentName,
+                                                                     @PageableDefault(page = 0, size = 10, sort = "fechaCreacion", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        if ( establishmentName == null || establishmentName.length() == 0) {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+        } else {
+            return reservationService.getByEstablishmentName( establishmentName, pageable )
+                    .map( reservationsPage -> new ResponseEntity<>( reservationsPage, HttpStatus.OK ))
+                    .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ) );
+        }
+
+    }
+
     @GetMapping("/user/page/{id}")
     public ResponseEntity<Page<Reservation>> getByUser(@PathVariable("id") String userId,
                                                        @PageableDefault(page = 0, size = 10, sort = "fechaCreacion", direction = Sort.Direction.DESC) Pageable pageable) {

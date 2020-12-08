@@ -9,6 +9,7 @@ public class Reservation {
     private String id;
     private String userId;
     private String establishmentId;
+    private String establishmentName;
     private String name;
     private LocalDateTime reservationDate;
     private Integer amountOfPeople;
@@ -38,6 +39,14 @@ public class Reservation {
 
     public void setEstablishmentId(String establishmentId) {
         this.establishmentId = establishmentId;
+    }
+
+    public String getEstablishmentName() {
+        return establishmentName;
+    }
+
+    public void setEstablishmentName(String establishmentName) {
+        this.establishmentName = establishmentName;
     }
 
     public LocalDateTime getReservationDate() {

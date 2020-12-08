@@ -39,6 +39,11 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        return usuarioMongoRepository.findByEmail( username ).map( usuario -> mapper.toUser( usuario ));
+    }
+
+    @Override
     public User save(User user) {
         Usuario usuario = mapper.toUsuario( user );
         return this.mapper.toUser( this.usuarioMongoRepository.save( usuario ) );

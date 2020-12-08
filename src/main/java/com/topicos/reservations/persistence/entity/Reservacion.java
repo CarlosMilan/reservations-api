@@ -17,6 +17,7 @@ public class Reservacion {
 
     private String idUsuario;
     private String idEstablecimiento;
+    private String nombreEstablecimiento;
     private String nombre;
     private LocalDateTime fechaReserva;
     private Integer cantPersonas;
@@ -46,6 +47,14 @@ public class Reservacion {
 
     public void setIdEstablecimiento(String idEstablecimiento) {
         this.idEstablecimiento = idEstablecimiento;
+    }
+
+    public String getNombreEstablecimiento() {
+        return nombreEstablecimiento;
+    }
+
+    public void setNombreEstablecimiento(String nombreEstablecimiento) {
+        this.nombreEstablecimiento = nombreEstablecimiento;
     }
 
     public LocalDateTime getFechaReserva() {
