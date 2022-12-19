@@ -2,16 +2,29 @@ package com.topicos.reservations.domain;
 
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 public class Establishment {
 
     private String id;
+
+    @NotNull(message = "El nombre no puede estar vacío")
     private String name;
+
+    @NotNull(message = "El tipo de establecimiento no puede estar vacío")
     private String type;
+
+    @NotNull(message = "La dirección del establecimiento no puede estar vacío")
     private Address address;
-    private List<String> phones;
+    private List<@NotNull(message = "El numero de telefono no puede estar vacío") String> phones;
+
+    @NotNull
+    @Min(value = 5, message = "La capacidad máxima no puede ser infrior a 5 personas")
+    @Max(value = 1000, message = "La capacidad máxima no puede ser mayor a 1000 personas")
     private Integer maxCapacity;
     private Double rating;
     private Integer numOfVotes;

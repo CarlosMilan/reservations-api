@@ -1,8 +1,10 @@
 package com.topicos.reservations.domain.service;
 
 import com.topicos.reservations.domain.Establishment;
+import com.topicos.reservations.domain.Reservation;
 import com.topicos.reservations.domain.Review;
 import com.topicos.reservations.domain.User;
+import com.topicos.reservations.domain.exceptions.ResourceNotFoundException;
 import com.topicos.reservations.domain.repository.EstablishmentRepository;
 import com.topicos.reservations.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,8 @@ public class EstablishmentService {
         return repository.getAll( pageable );
     }
 
-    public Optional<Establishment> getEstablishment( String establishmentId ) {
-        return repository.getEstablishment( establishmentId );
+    public Optional<Establishment> getEstablishmentById(String establishmentId ) {
+        return repository.getEstablishmentById( establishmentId );
     }
 
     public Optional<List<Establishment>> getByType( String type ) {
@@ -66,45 +68,43 @@ public class EstablishmentService {
     }
 
     public Establishment addReview(String establishmentId, Review review) {
-        if ( repository.getEstablishment( establishmentId ).isPresent()) {
-            Establishment establishment = repository.getEstablishment( establishmentId ).get();
-            User user = userRepository.getUser(review.getUserId()).get();
-            if (establishment != null && user != null) {
-                if (establishment.getReviews() == null || establishment.getReviews().size() == 0) {
-                    establishment.setRating(review.getScore().doubleValue());
-                    review.setCreateAt( LocalDateTime.now() );
-                    establishment.getReviews().add(review);
-                    establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
-                    return repository.save(establishment);
-                } else {
+        Establishment establishment = getEstablishment(establishmentId);
+        User user = getUser(review.getUserId());
 
-                    boolean existUserId = false;
-                    for (Review rev : establishment.getReviews()) {
-                        if (rev.getUserId().equals(review.getUserId())) {
-                            existUserId = true;
-                            break;
-                        }
-                    }
-                    if (!existUserId) {
-                        Double newRating = establishment.getRating() * establishment.getReviews().size();
-                        newRating += review.getScore();
-                        newRating = newRating / (establishment.getReviews().size() + 1);
-                        establishment.setRating(newRating);
-                        review.setCreateAt( LocalDateTime.now() );
-                        establishment.getReviews().add(review);
-                        establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
-                        return repository.save(establishment);
-                    } else return establishment;
+        if (establishment.getReviews() == null || establishment.getReviews().size() == 0) {
+            establishment.setRating(review.getScore().doubleValue());
+            review.setCreateAt( LocalDateTime.now() );
+            establishment.getReviews().add(review);
+            establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
+            return repository.save(establishment);
+        } else {
+
+            //TODO Seguir refactorizando desde acá
+
+            boolean existUserId = false;
+            for (Review rev : establishment.getReviews()) {
+                if (rev.getUserId().equals(review.getUserId())) {
+                    existUserId = true;
+                    break;
                 }
-
-            } else {
-                return null;
             }
-        } else return null;
+
+            if (!existUserId) {
+                Double newRating = establishment.getRating() * establishment.getReviews().size();
+                newRating += review.getScore();
+                newRating = newRating / (establishment.getReviews().size() + 1);
+                establishment.setRating(newRating);
+                review.setCreateAt( LocalDateTime.now() );
+                establishment.getReviews().add(review);
+                establishment.setNumOfVotes(establishment.getNumOfVotes() + 1);
+                return repository.save(establishment);
+            } else return establishment;
+        }
+
     }
 
     public Establishment editReview( String establishmentId, Review review ) {
-        Establishment establishment = repository.getEstablishment( establishmentId ).get();
+        Establishment establishment = repository.getEstablishmentById( establishmentId ).get();
 
         if (establishment != null) {
             if ( establishment.getReviews() != null && establishment.getReviews().size() > 0) {
@@ -131,7 +131,7 @@ public class EstablishmentService {
     }
 
     public boolean deleteReview( String establishmentId, String userId ) {
-        Establishment establishment = repository.getEstablishment( establishmentId ).get();
+        Establishment establishment = repository.getEstablishmentById( establishmentId ).get();
         if ( establishment != null ) {
             if (establishment.getReviews() != null ) {
                 if (establishment.getReviews().size() > 0) {
@@ -163,8 +163,20 @@ public class EstablishmentService {
         }
     }
 
+    private Establishment getEstablishment(String establishmentId) {
+        return repository
+                .getEstablishmentById(establishmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro establecimiento con id: " + establishmentId));
+    }
+
+    private User getUser(String userId) {
+        return userRepository
+                .getUserById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro usuario con id: " + userId));
+    }
+
     public boolean delete( String establishmentId ) {
-        return getEstablishment( establishmentId ).map( establishment -> {
+        return getEstablishmentById( establishmentId ).map( establishment -> {
             repository.delete( establishmentId);
             return true;
         }).orElse(false);

@@ -33,7 +33,7 @@ public class EstablecimientoRepository implements EstablishmentRepository {
     }
 
     @Override
-    public Optional<Establishment> getEstablishment(String establishmentId) {
+    public Optional<Establishment> getEstablishmentById(String establishmentId) {
         return this.establecimientoMongoRepository.findById( establishmentId )
                 .map( establecimiento -> mapper.toEstablishment( establecimiento ));
     }

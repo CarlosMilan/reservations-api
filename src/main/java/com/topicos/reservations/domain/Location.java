@@ -2,8 +2,11 @@ package com.topicos.reservations.domain;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class Location {
+    @NotNull(message = "El tipo de ubicación no puede estar vacío")
     private String type;
     private Double[] coordinates;
 

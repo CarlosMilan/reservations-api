@@ -3,6 +3,7 @@ package com.topicos.reservations.domain.service;
 import com.topicos.reservations.domain.Establishment;
 import com.topicos.reservations.domain.Reservation;
 import com.topicos.reservations.domain.User;
+import com.topicos.reservations.domain.exceptions.ResourceNotFoundException;
 import com.topicos.reservations.domain.repository.EstablishmentRepository;
 import com.topicos.reservations.domain.repository.ReservationRepository;
 import com.topicos.reservations.domain.repository.UserRepository;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,28 +62,33 @@ public class ReservationService {
 
 
     public Reservation save( Reservation reservation ) {
-        if (reservation.getEstablishmentId() == null || reservation.getEstablishmentId().length() == 0 || reservation.getUserId() == null || reservation.getUserId().length() == 0 ) {
-            return null;
-        } else {
-            Establishment establishment = establishmentRepository.getEstablishment(reservation.getEstablishmentId()).get();
-            User user = userRepository.getUser(reservation.getUserId()).get();
-            System.out.println("user = " + user);
-            if (establishment != null && user != null) {
-                if ( reservation.getName() == null || reservation.getName().length() == 0) {
-                    String name = user.getName() + " " + user.getLastName();
-                    reservation.setName( name );
-                    LocalDateTime dateTime = LocalDateTime.now();
-                    reservation.setCreateAt( dateTime );
-                }
-                reservation.setEstablishmentName( establishment.getName() );
-                Reservation res = reservationRepository.save( reservation );
-                //userRepository.save( user );
-                System.out.println("EL USUARIO SE GUARDÓ: user = " + user);
-                return res;
-            } else {
-                return null;
-            }
-        }
+        Establishment establishment = getEstablishment(reservation);
+        User user = getUser(reservation);
+
+        System.out.println("user = " + user);
+        String name = user.getName() + " " + user.getLastName();
+        reservation.setName( name );
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        reservation.setCreateAt( dateTime );
+        reservation.setEstablishmentName( establishment.getName() );
+        Reservation res = reservationRepository.save( reservation );
+        //userRepository.save( user );
+        System.out.println("EL USUARIO SE GUARDÓ: user = " + user);
+        return res;
+
+    }
+
+    private Establishment getEstablishment(Reservation reservation) {
+        return establishmentRepository
+                .getEstablishmentById(reservation.getEstablishmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro establecimiento con id: " + reservation.getEstablishmentId()));
+    }
+
+    private User getUser(Reservation reservation) {
+        return userRepository
+                .getUserById(reservation.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro usuario con id: " + reservation.getUserId()));
     }
 
 

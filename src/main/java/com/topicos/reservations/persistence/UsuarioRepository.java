@@ -34,7 +34,7 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> getUser(String userId) {
+    public Optional<User> getUserById(String userId) {
         return this.usuarioMongoRepository.findById( userId ).map( usuario -> mapper.toUser( usuario ));
     }
 

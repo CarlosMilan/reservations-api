@@ -2,12 +2,19 @@ package com.topicos.reservations.domain;
 
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 public class Review {
     private String userId;
+
+    @NotNull(message = "La puntuación no puede estar vacía")
+    @Min(value = 0, message = "La puntuación no puede ser negativa")
+    @Max(value = 10, message = "La puntuación no puede ser superior a 10")
     private Integer score;
     private String commentary;
     private LocalDateTime createAt;

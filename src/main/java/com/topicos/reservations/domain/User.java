@@ -2,17 +2,32 @@ package com.topicos.reservations.domain;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
 public class User {
     private String id;
+
+    @NotNull(message = "El nombre del usuario no puede estar vacío")
     private String name;
+
+    @NotNull(message = "El apellido del usuario no puede estar vacío")
     private String lastName;
+
+    @NotNull(message = "La dirección del usuario no puede estar vacía")
     private Address address;
+
+    @NotNull(message = "El email del usuario no puede estar vacío")
+    @Pattern(regexp = "^[0-9a-zA-Z.\\-_]+@[0-9a-zA-Z]+(\\.[a-zA-Z]+)+$", message = "El correo electrónico tiene un formato incorrecto")
     private String email;
+
+    @NotNull(message = "La contraseña no puede estar vacía")
+    @Size(min = 4, max = 30, message = "La contraseña tiene que tener entre 4 y 30 caracteres")
     private String password;
-    private List<String> phones;
+    private List<@NotNull(message = "El telefono no puede estar vacío")String> phones;
 
     public String getId() {
         return id;

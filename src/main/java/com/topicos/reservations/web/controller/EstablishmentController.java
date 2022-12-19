@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class EstablishmentController {
         if ( establishmentId.length() == 0 || establishmentId == null ) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
         } else {
-            return establishmentService.getEstablishment( establishmentId )
+            return establishmentService.getEstablishmentById( establishmentId )
                     .map( establishment -> new ResponseEntity<>( establishment, HttpStatus.OK))
                     .orElse( new ResponseEntity<>( HttpStatus.NOT_FOUND ));
         }
@@ -114,7 +115,7 @@ public class EstablishmentController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Establishment> save( @RequestBody Establishment establishment ) {
+    public ResponseEntity<Establishment> save(@Valid @RequestBody Establishment establishment ) {
         if ( establishment != null ) {
             return new ResponseEntity<>(establishmentService.save(establishment), HttpStatus.CREATED);
         } else {
@@ -123,7 +124,7 @@ public class EstablishmentController {
     }
 
     @PutMapping("/add/review/{id}")
-    public ResponseEntity<Establishment> addReview(@PathVariable("id") String establishmentId, @RequestBody Review review) {
+    public ResponseEntity<Establishment> addReview(@PathVariable("id") String establishmentId, @Valid @RequestBody Review review) {
         if ( establishmentId.length() == 0 || establishmentId == null || review == null ) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
         } else {
@@ -135,7 +136,7 @@ public class EstablishmentController {
     }
 
     @PutMapping("/edit/review/{id}")
-    public ResponseEntity<Establishment> editReview(@PathVariable("id") String establishmentId, @RequestBody Review review) {
+    public ResponseEntity<Establishment> editReview(@PathVariable("id") String establishmentId, @Valid @RequestBody Review review) {
         if ( establishmentId.length() == 0 || establishmentId == null || review == null ) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
         } else {

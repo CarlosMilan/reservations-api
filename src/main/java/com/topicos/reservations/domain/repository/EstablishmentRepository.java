@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface EstablishmentRepository {
     List<Establishment> getAll();
     Page<Establishment> getAll( Pageable pageable );
-    Optional<Establishment> getEstablishment( String establishmentId );
+    Optional<Establishment> getEstablishmentById(String establishmentId );
     Optional<List<Establishment>> getEstablishmentByAddress( String city, String province );
     Optional<Page<Establishment>> getEstablishmentByAddress( String city, String province, Pageable pageable );
     Optional<List<Establishment>> getEstablishmentByType( String type );
